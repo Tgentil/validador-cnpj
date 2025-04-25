@@ -1,14 +1,17 @@
-// Aplica a máscara ao campo de CNPJ
 const cnpjInput = document.getElementById("cnpjInput");
+const validateBtn = document.getElementById("validateBtn");
+const loading = document.getElementById("loading");
+
+// Aplica a máscara ao campo de CNPJ
 IMask(cnpjInput, {
 	mask: "00.000.000/0000-00",
 });
 
-function validarCNPJ() {
-	let cnpj = cnpjInput.value;
+async function validarCNPJ() {
 
-	// --- LIMPEZA OPCIONAL: REMOVER PONTUAÇÃO ---
+    // --- LIMPEZA OPCIONAL: REMOVER PONTUAÇÃO ---
 	// Descomente a linha abaixo para remover pontos, barras e traços automaticamente:
+	let cnpj = cnpjInput.value;
 	cnpj = cnpj.replace(/[^\d]+/g, "");
 	// --------------------------------------------
 
@@ -53,5 +56,45 @@ function validarCNPJ() {
 		return;
 	}
 
-	alert("CNPJ válido!");
+	// Feedback visual: desativa botão e mostra loading
+	validateBtn.disabled = true;
+	loading.classList.remove("d-none");
+
+    // Consulta a API da BrasilAPI para verificar se a empresa existe
+    // e avisa o usuário se o CNPJ é válido
+    // e se a empresa foi encontrada ou não.
+	try {
+		const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+
+		if (!response.ok) {
+			throw new Error(`Erro HTTP: ${response.status}`);
+		}
+
+		const data = await response.json();
+
+		if (data.razao_social) {
+			alert(`Empresa encontrada: ${data.razao_social}`);
+		} else {
+			alert("Empresa não encontrada, mas o CNPJ é válido.");
+		}
+	} catch (error) {
+		if (error.message.includes("429")) {
+			alert("Limite de requisições excedido. Tente novamente mais tarde.");
+		} else if (error.message.includes("404")) {
+			alert("Empresa não encontrada, mas o CNPJ é válido.");
+		} else if (error.message.includes("500")) {
+            alert("Erro interno no servidor. Tente novamente mais tarde.");
+        } else if (error.message.includes("503")) {
+            alert("Serviço temporariamente indisponível. Tente novamente mais tarde.");
+        } else if (error.message.includes("524")) {
+            alert("Tempo limite de requisição excedido. Tente novamente mais tarde.");
+        } else {
+			alert("Erro ao consultar a base da Receita. CNPJ válido.");
+		}
+		console.error("Erro na consulta:", error);
+	} finally {
+		// Reativa o botão e oculta loading
+		validateBtn.disabled = false;
+		loading.classList.add("d-none");
+	}
 }

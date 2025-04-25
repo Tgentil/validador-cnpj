@@ -1,10 +1,11 @@
 # 🧾 Validador de CNPJ com HTML, JavaScript e Bootstrap
 
- [![GitHub](https://img.shields.io/badge/Visit-My%20Profile-0891B2?style=flat-square&logo=github)](https://github.com/Tgentil) [![TGentil GitHub](https://img.shields.io/badge/Projeto-Validador%20de%20CNPJ-FF4500?style=flat-square)](https://tgentil.github.io/validador-cnpj/)
+[![GitHub](https://img.shields.io/badge/Visit-My%20Profile-0891B2?style=flat-square&logo=github)](https://github.com/Tgentil) [![TGentil GitHub](https://img.shields.io/badge/Projeto-Validador%20de%20CNPJ-FF4500?style=flat-square)](https://tgentil.github.io/validador-cnpj/)
 
-Este projeto é um simples validador de CNPJ implementado com HTML, JavaScript puro (Vanilla JS) e estilizado com Bootstrap. Ele permite que o usuário digite um CNPJ (com ou sem pontuação) e valide sua estrutura com base na fórmula oficial dos dígitos verificadores. O projeto usa [UNPKG](https://app.unpkg.com/imask@7.6.1) para a máscara do input. O deploy foi feito no GitHub Pages.
+Este projeto é um validador de CNPJ com frontend responsivo, desenvolvido com HTML, JavaScript Vanilla e Bootstrap. Ele realiza validação do CNPJ com base na fórmula oficial dos dígitos verificadores, aplica máscara de entrada com `IMask.js`, e realiza uma busca na [BrasilAPI](https://brasilapi.com.br/) para consultar o nome da empresa com base no CNPJ fornecido.
 
-link do projeto : [Validador de CNPJ](https://tgentil.github.io/validador-cnpj/)
+
+🔗 Acesse em: [Validador de CNPJ](https://tgentil.github.io/validador-cnpj/)
 
 ---
 
@@ -12,9 +13,11 @@ link do projeto : [Validador de CNPJ](https://tgentil.github.io/validador-cnpj/)
 
 1. Clone ou baixe este repositório.
 2. Abra o arquivo `index.html` no seu navegador.
-3. Digite um CNPJ no campo (ex: `12.345.678/0001-95` ou `12345678000195`).
-4. Clique em "Validar".
-5. Será exibido um alerta indicando se o CNPJ é válido ou inválido.
+3. Digite um CNPJ (com ou sem pontuação).
+4. Clique em **Validar**.
+5. O sistema exibirá:
+   - Se o CNPJ é válido ou inválido.
+   - Se a empresa foi encontrada na base da BrasilAPI.
 
 ---
 
@@ -108,15 +111,38 @@ if (resultado !== parseInt(digitos.charAt(1))) {
 
 ---
 
-### 5. ✅ CNPJ Válido
+## 🔍 Integração com a BrasilAPI
+
+Após validar o CNPJ, o código realiza:
+
 ```js
-alert("CNPJ válido!");
+const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+const data = await response.json();
 ```
 
-- **Se chegou aqui**: Significa que os dois dígitos verificadores batem com os esperados. O CNPJ é válido!
+- Se `data.razao_social` existir → mostra o nome da empresa.
+- Se não existir → "empresa não encontrada, mas CNPJ é válido".
+- Erros HTTP (como 429,404,524...) são tratados com mensagens personalizadas.
+
 
 ---
 
-## 🎨 Estilo
+## ⏳ Feedback Visual
 
-Este projeto usa [Bootstrap 5](https://getbootstrap.com/)
+Durante a busca na API:
+
+- O botão de validação é desativado.
+- Um **spinner** com a mensagem "Consultando dados na Receita..." é exibido.
+
+Após a resposta ou erro:
+
+- O botão é reabilitado.
+- O spinner é ocultado.
+
+---
+
+## 📦 Dependências
+
+- [Bootstrap 5](https://getbootstrap.com/)
+- [IMask.js](https://unpkg.com/imask)
+- [BrasilAPI - CNPJ Endpoint](https://brasilapi.com.br/docs#tag/CNPJ)

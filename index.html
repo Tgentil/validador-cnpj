@@ -13,7 +13,11 @@
 				<div class="mb-3">
 					<input type="text" class="form-control" id="cnpjInput" placeholder="Digite o CNPJ" />
 				</div>
-				<button class="btn btn-primary w-100" onclick="validarCNPJ()">Validar</button>
+				<button class="btn btn-primary w-100" id="validateBtn" onclick="validarCNPJ()">Validar</button>
+				<div id="loading" class="text-center mt-3 d-none">
+					<div class="spinner-border text-primary" role="status"></div>
+					<p class="mt-2 mb-0">Consultando dados na Receita...</p>
+				</div>
 			</div>
 		</div>
 
