@@ -2,7 +2,7 @@
 
  [![GitHub](https://img.shields.io/badge/Visit-My%20Profile-0891B2?style=flat-square&logo=github)](https://github.com/Tgentil) [![TGentil GitHub](https://img.shields.io/badge/Projeto-Validador%20de%20CNPJ-FF4500?style=flat-square)](https://tgentil.github.io/validador-cnpj/)
 
-Este projeto é um simples validador de CNPJ implementado com HTML, JavaScript puro (Vanilla JS) e estilizado com Bootstrap. Ele permite que o usuário digite um CNPJ (com ou sem pontuação) e valide sua estrutura com base na fórmula oficial dos dígitos verificadores.
+Este projeto é um simples validador de CNPJ implementado com HTML, JavaScript puro (Vanilla JS) e estilizado com Bootstrap. Ele permite que o usuário digite um CNPJ (com ou sem pontuação) e valide sua estrutura com base na fórmula oficial dos dígitos verificadores. O projeto usa [UNPKG](https://app.unpkg.com/imask@7.6.1) para a máscara do input. O deploy foi feito no GitHub Pages.
 
 link do projeto : [Validador de CNPJ](https://tgentil.github.io/validador-cnpj/)
 
@@ -120,9 +120,3 @@ alert("CNPJ válido!");
 ## 🎨 Estilo
 
 Este projeto usa [Bootstrap 5](https://getbootstrap.com/)
-
----
-
-## 🛠 Melhorias futuras
-
-- Aplicar máscara automática ao digitar (ex: `00.000.000/0000-00`).

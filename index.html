@@ -11,12 +11,15 @@
 			<div class="card p-4 shadow" style="max-width: 400px; width: 100%">
 				<h2 class="text-center mb-3">Validador de CNPJ</h2>
 				<div class="mb-3">
-					<input type="text" class="form-control" id="cnpjInput" placeholder="Digite o CNPJ (com ou sem pontuação)" />
+					<input type="text" class="form-control" id="cnpjInput" placeholder="Digite o CNPJ" />
 				</div>
 				<button class="btn btn-primary w-100" onclick="validarCNPJ()">Validar</button>
 			</div>
 		</div>
 
+		<!-- Biblioteca de máscara -->
+		<script src="https://unpkg.com/imask"></script>
+		<!-- Script com lógica de validação e máscara -->
 		<script src="script.js"></script>
 	</body>
 </html>
