@@ -8,15 +8,26 @@ IMask(cnpjInput, {
 });
 
 async function validarCNPJ() {
-
-    // --- LIMPEZA OPCIONAL: REMOVER PONTUAÇÃO ---
-	// Descomente a linha abaixo para remover pontos, barras e traços automaticamente:
 	let cnpj = cnpjInput.value;
+
+	// Verifica se o campo está vazio
+	if (!cnpj.trim()) {
+		alert("Por favor, insira um CNPJ.");
+		return;
+	}
+
+	// --- LIMPEZA OPCIONAL: REMOVER PONTUAÇÃO ---
 	cnpj = cnpj.replace(/[^\d]+/g, "");
 	// --------------------------------------------
 
-    // Verifica se o CNPJ tem 14 dígitos e não é uma sequência de números iguais
-	if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) {
+	// Verifica se o CNPJ tem 14 dígitos após limpeza
+	if (cnpj.length !== 14) {
+		alert("O CNPJ deve conter 14 dígitos numéricos.");
+		return;
+	}
+
+	// Verifica se é uma sequência repetida (ex: 00000000000000)
+	if (/^(\d)\1+$/.test(cnpj)) {
 		alert("CNPJ inválido.");
 		return;
 	}
@@ -27,7 +38,7 @@ async function validarCNPJ() {
 	let soma = 0;
 	let pos = tamanho - 7;
 
-    // Cálculo do primeiro dígito verificador
+	// Cálculo do primeiro dígito verificador
 	for (let i = tamanho; i >= 1; i--) {
 		soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
 		if (pos < 2) pos = 9;
@@ -44,7 +55,7 @@ async function validarCNPJ() {
 	soma = 0;
 	pos = tamanho - 7;
 
-    // Cálculo do segundo dígito verificador
+	// Cálculo do segundo dígito verificador
 	for (let i = tamanho; i >= 1; i--) {
 		soma += parseInt(numeros.charAt(tamanho - i)) * pos--;
 		if (pos < 2) pos = 9;
@@ -60,9 +71,9 @@ async function validarCNPJ() {
 	validateBtn.disabled = true;
 	loading.classList.remove("d-none");
 
-    // Consulta a API da BrasilAPI para verificar se a empresa existe
-    // e avisa o usuário se o CNPJ é válido
-    // e se a empresa foi encontrada ou não.
+	// Consulta a API da BrasilAPI para verificar se a empresa existe
+	// e avisa o usuário se o CNPJ é válido
+	// e se a empresa foi encontrada ou não.
 	try {
 		const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
 
@@ -83,12 +94,12 @@ async function validarCNPJ() {
 		} else if (error.message.includes("404")) {
 			alert("Empresa não encontrada, mas o CNPJ é válido.");
 		} else if (error.message.includes("500")) {
-            alert("Erro interno no servidor. Tente novamente mais tarde.");
-        } else if (error.message.includes("503")) {
-            alert("Serviço temporariamente indisponível. Tente novamente mais tarde.");
-        } else if (error.message.includes("524")) {
-            alert("Tempo limite de requisição excedido. Tente novamente mais tarde.");
-        } else {
+			alert("Erro interno no servidor. Tente novamente mais tarde.");
+		} else if (error.message.includes("503")) {
+			alert("Serviço temporariamente indisponível. Tente novamente mais tarde.");
+		} else if (error.message.includes("524")) {
+			alert("Tempo limite de requisição excedido. Tente novamente mais tarde.");
+		} else {
 			alert("Erro ao consultar a base da Receita. CNPJ válido.");
 		}
 		console.error("Erro na consulta:", error);
