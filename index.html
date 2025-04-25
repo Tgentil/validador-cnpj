@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Validador de CNPJ</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+	</head>
+	<body class="bg-light">
+		<div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+			<div class="card p-4 shadow" style="max-width: 400px; width: 100%">
+				<h2 class="text-center mb-3">Validador de CNPJ</h2>
+				<div class="mb-3">
+					<input type="text" class="form-control" id="cnpjInput" placeholder="Digite o CNPJ (com ou sem pontuação)" />
+				</div>
+				<button class="btn btn-primary w-100" onclick="validarCNPJ()">Validar</button>
+			</div>
+		</div>
+
+		<script src="script.js"></script>
+	</body>
+</html>
